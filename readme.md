@@ -6,6 +6,8 @@ This guide is adopted from the ARO reference architecture and focuses specifical
 https://techcommunity.microsoft.com/t5/fasttrack-for-azure/azure-red-hat-openshift-reference-architecture-amp-reference/ba-p/3470115
 
 ## Prerequistites:
+refer to the [prereq doc](prereq.md) to setup everything from scratch
+
 A VNET with 3 subnets:
 one for the ARO Workers
 one for the ARO Control Plane
