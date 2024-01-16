@@ -21,7 +21,9 @@ PRIVATEENDPOINTSUBNET_NAME='PrivateEndpoint-subnet'
 ```
 
 # Create the resource group
+```bash
 az group create --name $RGNAME --location $LOCATION
+```
 
 ## Create a VNET with three subnets
 ```bash
