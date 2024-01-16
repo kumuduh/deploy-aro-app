@@ -1,12 +1,15 @@
 # Prerequisites for deploying an enterprise application
 
 ## Environment Variables
+```bash
 RGNAME='kevin-aro-rg'
 LOCATION='eastus'
 AROCLUSTER='poc-kevin-cluster'
 PULLSECRETLOCATION=@/Users/kevincollins/Downloads/pull-secret.json
+```
 
 # VNet Name and IP Addresses
+```bash
 VNET_NAME='aro-kevin-vnet'
 MASTERAROSUBNET_NAME=master-aro-subnet
 WORKERAROSUBNET_NAME=worker-aro-subnet
@@ -15,6 +18,7 @@ MASTERAROSUBNET_PREFIX='10.1.0.0/23'
 WORKERAROSUBNET_PREFIX='10.1.2.0/23'
 PRIVATEENDPOINTSUBNET_PREFIX='10.1.6.0/25'
 PRIVATEENDPOINTSUBNET_NAME='PrivateEndpoint-subnet'
+```
 
 # Create the resource group
 az group create --name $RGNAME --location $LOCATION
