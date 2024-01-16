@@ -2,7 +2,7 @@
 
 This guide will show you how to deploy an enterprise application to ARO using the following Azure services: Key Vault, Azure Container Registry, and Cosmos DB.  Following best practices, the above services will be integrated with an ARO cluster using private endpoints.
 
-![Alt text](arp-app.png "Application Architecture")
+![Alt text](aro-app.png "Application Architecture")
 
 This guide is adopted from the ARO reference architecture and focuses specifically on deploying an application end to end.
 https://techcommunity.microsoft.com/t5/fasttrack-for-azure/azure-red-hat-openshift-reference-architecture-amp-reference/ba-p/3470115
