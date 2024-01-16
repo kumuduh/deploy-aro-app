@@ -1,6 +1,8 @@
 # Deploying an enterprise application to ARO
 
-This guide will show you how to deploy an enterprise application to ARO using the following Azure services: Key Vault, Azure Container Registry, and Cosmos DB.
+This guide will show you how to deploy an enterprise application to ARO using the following Azure services: Key Vault, Azure Container Registry, and Cosmos DB.  Following best practices, the above services will be integrated with an ARO cluster using private endpoints.
+
+![Alt text](arp-app.png "Application Architecture")
 
 This guide is adopted from the ARO reference architecture and focuses specifically on deploying an application end to end.
 https://techcommunity.microsoft.com/t5/fasttrack-for-azure/azure-red-hat-openshift-reference-architecture-amp-reference/ba-p/3470115
@@ -319,7 +321,7 @@ https://github.com/kmcolli/mslearn-aks-workshop-ratings-web.git
 Set your GitHub Name
 
 ```bash
-GIT_NAME=kmcolli
+GIT_NAME=<YOUR GIT ID>
 ```
 
 git clone https://github.com/$GIT_NAME/mslearn-aks-workshop-ratings-api.git
@@ -342,9 +344,9 @@ Build out the mslearn aks workshop ratings api
 ```bash
 cd mslearn-aks-workshop-ratings-api
 # If running from Git Bash terminal skip the sudo word
-docker build . -t "$ACR_NAME.azurecr.io/ratings-api:v1"
+docker build . -t "$ACR_NAME.azurecr.io/ratings-api:latest"
 
-docker push "$ACR_NAME.azurecr.io/ratings-api:v1"
+docker push "$ACR_NAME.azurecr.io/ratings-api:latest"
 
 cd ..
 ```
@@ -354,9 +356,9 @@ cd ..
 
 cd mslearn-aks-workshop-ratings-web
 
-docker build . -t "$ACR_NAME.azurecr.io/ratings-web:v1"
+docker build . -t "$ACR_NAME.azurecr.io/ratings-web:latest"
 
-docker push "$ACR_NAME.azurecr.io/ratings-web:v1"
+docker push "$ACR_NAME.azurecr.io/ratings-web:latest"
 
 cd ..
 ### Deploy to OpenShift
@@ -368,13 +370,34 @@ mslearn-aks-workshop-ratings-api/deploy/api-deployment.yaml
 Change the deployment files to point to your ACR instance:
 
 ```bash
-image: <ACR_NAME>.azurecr.io/ratings-api:v2 # IMPORTANT: update with your own repository
+image: <ACR_NAME>.azurecr.io/ratings-api:latest # IMPORTANT: update with your own repository
 ```
 
-deploy the application
+### manually deploying the applicaiton
 oc apply -f mslearn-aks-workshop-ratings-api/deploy/api-deployment.yaml
+
 oc apply -f mslearn-aks-workshop-ratings-web/deploy/ratings-web-deployment.yaml
 
 
+### Auto deploy with OpenShift Pipelines
 
+oc secrets link pipeline acr-secret
+
+Set your Git Token so
+GIT_TOKEN=<xyz>
+
+cat <<EOF | oc apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-secret
+type: Opaque
+stringData:
+  secretToken: $GIT_TOKEN
+EOF
+```
+
+oc apply -f mslearn-aks-workshop-ratings-api/.tekton
+
+oc apply -f mslearn-aks-workshop-ratings-api/.tekton/triggers
 
